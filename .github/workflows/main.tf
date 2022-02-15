@@ -76,7 +76,7 @@ resource "aws_instance" "testing_vm" {
     # The default username for our AMI
     user = var.ami_username
     # Private key for connection
-    private_key = file(pathexpand(var.private_key))
+    private_key = file(pathexpand(var.private_key.rsa))
     # Type of connection
     type = "ssh"
   }
