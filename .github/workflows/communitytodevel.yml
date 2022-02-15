@@ -29,6 +29,10 @@ jobs:
         working-directory: .github/workflows
         run: terraform init
 
+      - name: Terraform format
+        working-directory: .github/workflows
+        run: terraform fmt
+
       - name: terraform validate
         working-directory: .github/workflows
         run: terraform validate
