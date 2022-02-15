@@ -16,20 +16,18 @@ provider "aws" {
 // After that, write the private key to a local file and upload the public key to AWS
 
 
-resource "tls_private_key" "key" {
+resource "tls_private_key" "benchmark" {   # Generate key
   algorithm = "RSA"
+  rsa_bits  = 4096
 }
-
-resource "local_file" "private_key" {
-  filename          = "${path.module}/var.private_key.key"
-  sensitive_content = tls_private_key.key.private_key_pem
-  file_permission   = "0400"
-}
-
 
 resource "aws_key_pair" "key_pair" {
-  key_name   = local_file.private_key.filename
-  public_key = tls_private_key.key.public_key_openssh
+  key_name   = "temp_key"                  # Add temp_key to AWS
+  public_key = tls_private_key.benchmark.public_key_openssh
+
+  provisioner "local-exec" {               # Add the "test_key.pem" to the runner
+    command  = "echo '${tls_private_key.benchmark.private_key_pem}' > ./temp_key.pem && chmod 400 temp_key.pem"
+  }
 }
 
 // Create a security group with access to port 22 and port 80 open to serve HTTP traffic
