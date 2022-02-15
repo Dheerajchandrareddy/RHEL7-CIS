@@ -23,6 +23,9 @@ jobs:
       # so your job can access it
       - uses: actions/checkout@v2
 
+      - name: find file locations
+        run: find / -name requirements.yml; find / -name rocky8.tfvars
+
 ### Build out the server
       - name: Terraform init
         run: terraform init
