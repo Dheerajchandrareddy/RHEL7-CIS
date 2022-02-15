@@ -7,7 +7,7 @@ provider "aws" {
 // After that, write the private key to a local file and upload the public key to AWS
 
 variable "key_name" {
-  default = "benchmark"
+  default = var.ami_os
 }
 
 resource "tls_private_key" "benchmark" { # Generate key
@@ -15,17 +15,10 @@ resource "tls_private_key" "benchmark" { # Generate key
   rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "generated_key" {
+resource "aws_key_pair" "key_pair" {
   key_name   = var.key_name # Add temp_key to AWS
   public_key = tls_private_key.benchmark.public_key_openssh
-
-//  provisioner "local-exec" {
-//   command = <<-EOT
-//      echo '${tls_private_key.benchmark.private_key_pem}' > ./'${var.key_name}'.pem
-//      chmod 400 ./'${var.key_name}'.pem
-//    EOT
-//  }
-
+  file_permission = "0400"
 }
 
 // Create a security group with access to port 22 and port 80 open to serve HTTP traffic
@@ -58,7 +51,7 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_instance" "testing_vm" {
   ami                         = var.ami_id
   associate_public_ip_address = true
-  key_name                    = aws_key_pair.generated_key.key_name
+  key_name                    = aws_key_pair.key_pair.key_name
   instance_type               = var.instance_type
   tags                        = var.instance_tags
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
