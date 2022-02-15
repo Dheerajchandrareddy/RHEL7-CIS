@@ -19,12 +19,12 @@ resource "aws_key_pair" "generated_key" {
   key_name   = var.key_name # Add temp_key to AWS
   public_key = tls_private_key.benchmark.public_key_openssh
 
-  provisioner "local-exec" {
-    command = <<-EOT
-      echo '${tls_private_key.benchmark.private_key_pem}' > ./'${var.key_name}'.pem
-      chmod 400 ./'${var.key_name}'.pem
-    EOT
-  }
+//  provisioner "local-exec" {
+//   command = <<-EOT
+//      echo '${tls_private_key.benchmark.private_key_pem}' > ./'${var.key_name}'.pem
+//      chmod 400 ./'${var.key_name}'.pem
+//    EOT
+//  }
 
 }
 
