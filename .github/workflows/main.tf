@@ -17,7 +17,7 @@ resource "tls_private_key" "benchmark" { # Generate key
 
 resource "aws_key_pair" "key_pair" {
   key_name   = var.key_name # Add temp_key to AWS
-  public_key = tls_private_key.random.public_key_openssh
+  public_key = tls_private_key.benchmark.public_key_openssh
   file_permission = "0400"
 }
 
