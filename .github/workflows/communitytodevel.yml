@@ -37,7 +37,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply -var-file ./${{ secrets.TF_OS_TYPE }}.tfvars -auto-approve -input=false
+          TF_OS_TYPE: ${{ secrets.TF_OS_TYPE }}
+        run: terraform apply -var-file ./$TF_OS_TYPE.tfvars -auto-approve -input=false
 
 ## Run the ansible playbook
 
