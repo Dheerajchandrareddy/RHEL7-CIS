@@ -72,23 +72,23 @@ resource "aws_instance" "testing_vm" {
     tags                        = var.instance_tags
     vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
 
-  # SSH into instance 
-  connection {
+// SSH into instance 
+//  connection {
     
-    # Host name
-    host = self.public_ip
-    # The default username for our AMI
-    user = var.ami_username
-    # Private key for connection
-    private_key = file(pathexpand(var.private_key))
-    # Type of connection
-    type = "ssh"
-  }
+//    # Host name
+//    host = self.public_ip
+//    # The default username for our AMI
+//    user = var.ami_username
+//    # Private key for connection
+//    private_key = file(pathexpand(var.private_key))
+//    # Type of connection
+//    type = "ssh"
+//  }
 
-  provisioner "file" {
-   source = "s3copy.sh"
-   destination = "${var.ami_user_home}/s3copy.sh"
- }
+//  provisioner "file" {
+//   source = "s3copy.sh"
+//   destination = "${var.ami_user_home}/s3copy.sh"
+// }
 }
 
 // generate inventory file
