@@ -29,6 +29,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          path: ./
 
       - name: terraform apply
         uses: dflook/terraform-apply@v1
@@ -38,6 +39,7 @@ jobs:
           TF_OS_TYPE: ${{ secrets.TF_OS_TYPE }}
         with:
           auto_approve: true
+          path: ./
           var_file: rocky8.tfvars
 
 ## Run the ansible playbook
