@@ -33,7 +33,7 @@ jobs:
       - name: Terraform validation
         run: terraform validate
 
-      - name: Terraform apply
+      - name: Terraform apply -var-file ${{secrets.TF_OS_TYPE }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
