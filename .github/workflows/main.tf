@@ -8,7 +8,7 @@
 //}
 
 provider "aws" {
-    profile = "default"
+    profile = ""
     region  = var.aws_region
 }
 
