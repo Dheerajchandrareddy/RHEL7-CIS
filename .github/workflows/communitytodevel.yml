@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: find file locations
-        run: find / -name requirements.yml; find / -name rocky8.tfvars
+        run: pwd; ls -laR
 
 ### Build out the server
       - name: Terraform init
