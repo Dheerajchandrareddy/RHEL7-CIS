@@ -15,11 +15,6 @@ variable "instance_tags" {
     type        = map(string)
 }
 
-variable "private_key" {
-    description = "name of the private key file"
-    default     = "private_key.rsa"
-  
-}
 
 // Taken from the OSname.tfvars
 
