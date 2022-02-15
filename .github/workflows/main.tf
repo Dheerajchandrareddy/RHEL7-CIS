@@ -21,7 +21,7 @@ resource "tls_private_key" "key" {
 }
 
 resource "local_file" "private_key" {
-  filename          = "${path.module}/var.private_key.rsa"
+  filename          = "${path.module}/var.private_key.key"
   sensitive_content = tls_private_key.key.private_key_pem
   file_permission   = "0400"
 }
@@ -76,7 +76,7 @@ resource "aws_instance" "testing_vm" {
     # The default username for our AMI
     user = var.ami_username
     # Private key for connection
-    private_key = file(pathexpand(var.private_key.rsa))
+    private_key = file(pathexpand(var.private_key.key))
     # Type of connection
     type = "ssh"
   }
