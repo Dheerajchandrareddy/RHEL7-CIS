@@ -23,14 +23,14 @@ jobs:
       # so your job can access it
       - uses: actions/checkout@v2
 
-      - name: find file locations
-        run: pwd; ls -laR
 
 ### Build out the server
       - name: Terraform init
-        run: terraform init .github/workflows/main.tf
+        working-directory: .github/workflows
+        run: terraform init
 
       - name: terraform validate
+        working-directory: .github/workflows
         run: terraform validate
 
       - name: terraform apply
@@ -38,6 +38,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           TF_OS_TYPE: ${{ secrets.TF_OS_TYPE }}
+        working-directory: .github/workflows
         run: terraform apply -var-file ".github/workflows/rocky8.tfvars" --auto-approve
 
 ## Run the ansible playbook
