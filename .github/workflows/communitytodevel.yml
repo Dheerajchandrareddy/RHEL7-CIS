@@ -28,7 +28,7 @@ jobs:
 
 ### Build out the server
       - name: Terraform init
-        run: terraform init .github/workflows
+        run: terraform init .github/workflows/main.tf
 
       - name: terraform validate
         run: terraform validate
