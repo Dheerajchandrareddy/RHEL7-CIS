@@ -17,7 +17,7 @@ provider "aws" {
 
 variable "key_name" { 
   default   = "benchmark"
-} #
+}
 
 resource "tls_private_key" "benchmark" {   # Generate key
   algorithm = "RSA"
@@ -28,11 +28,13 @@ resource "aws_key_pair" "generated_key" {
   key_name   = var.key_name                  # Add temp_key to AWS
   public_key = tls_private_key.benchmark.public_key_openssh
 
-  provisioner "local-exec" {               # Add the "test_key.pem" to the runner
+  provisioner "local-exec" {
     command  = <<-EOT
-    echo '${tls_private_key.benchmark.private_key_pem}' > ./'${var.key_name}'.pem 
+    echo '${tls_private_key.benchmark.private_key_pem}' > ./'${var.key_name}'.pem
     chmod 400 ./'${var.key_name}'.pem
+    EOT
   }
+
 }
 
 // Create a security group with access to port 22 and port 80 open to serve HTTP traffic
