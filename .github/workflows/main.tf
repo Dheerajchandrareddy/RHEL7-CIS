@@ -7,7 +7,7 @@ provider "aws" {
 // After that, write the private key to a local file and upload the public key to AWS
 
 variable "key_name" {
-  default = var.ami_os
+  default = "random"
 }
 
 resource "tls_private_key" "benchmark" { # Generate key
