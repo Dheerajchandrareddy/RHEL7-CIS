@@ -1,35 +1,26 @@
-//terraform {
-//    required_providers {
-//       aws = {
-//        source = "hashicorp/aws"
-//        }
-//    }
-//    required_version = ">=0.14.4"
-//}
-
 provider "aws" {
-    profile = ""
-    region  = var.aws_region
+  profile = ""
+  region  = var.aws_region
 }
 
 // Generate the SSH keypair that we’ll use to configure the EC2 instance.
 // After that, write the private key to a local file and upload the public key to AWS
 
-variable "key_name" { 
-  default   = "benchmark"
+variable "key_name" {
+  default = "benchmark"
 }
 
-resource "tls_private_key" "benchmark" {   # Generate key
+resource "tls_private_key" "benchmark" { # Generate key
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name   = var.key_name                  # Add temp_key to AWS
+  key_name   = var.key_name # Add temp_key to AWS
   public_key = tls_private_key.benchmark.public_key_openssh
 
   provisioner "local-exec" {
-    command  = <<-EOT
+    command = <<-EOT
       echo '${tls_private_key.benchmark.private_key_pem}' > ./'${var.key_name}'.pem
       chmod 400 ./'${var.key_name}'.pem
     EOT
@@ -65,30 +56,30 @@ resource "aws_security_group" "allow_ssh" {
 // instance setup
 
 resource "aws_instance" "testing_vm" {
-    ami                         = var.ami_id
-    associate_public_ip_address = true
-    key_name                    = aws_key_pair.generated_key.key_name
-    instance_type               = var.instance_type
-    tags                        = var.instance_tags
-    vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
+  ami                         = var.ami_id
+  associate_public_ip_address = true
+  key_name                    = aws_key_pair.generated_key.key_name
+  instance_type               = var.instance_type
+  tags                        = var.instance_tags
+  vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
 
-// SSH into instance 
-//  connection {
-    
-//    # Host name
-//    host = self.public_ip
-//    # The default username for our AMI
-//    user = var.ami_username
-//    # Private key for connection
-//    private_key = file(pathexpand(var.private_key))
-//    # Type of connection
-//    type = "ssh"
-//  }
+  // SSH into instance 
+  //  connection {
 
-//  provisioner "file" {
-//   source = "s3copy.sh"
-//   destination = "${var.ami_user_home}/s3copy.sh"
-// }
+  //    # Host name
+  //    host = self.public_ip
+  //    # The default username for our AMI
+  //    user = var.ami_username
+  //    # Private key for connection
+  //    private_key = file(pathexpand(var.private_key))
+  //    # Type of connection
+  //    type = "ssh"
+  //  }
+
+  //  provisioner "file" {
+  //   source = "s3copy.sh"
+  //   destination = "${var.ami_user_home}/s3copy.sh"
+  // }
 }
 
 // generate inventory file
