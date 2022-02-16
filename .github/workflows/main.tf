@@ -18,7 +18,6 @@ resource "tls_private_key" "benchmark" { # Generate key
 resource "aws_key_pair" "key_pair" {
   key_name   = var.key_name # Add temp_key to AWS
   public_key = tls_private_key.benchmark.public_key_openssh
-  file_permission = "0400"
 }
 
 // Create a security group with access to port 22 and port 80 open to serve HTTP traffic
