@@ -23,6 +23,13 @@ jobs:
       # so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Add ssh_key
+        working-directory: ~/.ssh
+        run: |
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }} > ${{ secrets.SSH_KEY_NAME }}.pem
+          chmod 0400 ${{ secrets.SSH_KEY_NAME }}.pem
+          ssh-add ${{ secrets.SSH_KEY_NAME }}
+
 ### Build out the server
       - name: Terraform init
         working-directory: .github/workflows
@@ -54,9 +61,8 @@ jobs:
         uses: arillso/action.playbook@master
         with:
           playbook: site.yml
-          inventory: hosts.yml
+          inventory: .github/workflows/hosts.yml
           galaxy_file: collections/requirements.yml
-
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'false'
           ANSIBLE_DEPRECATION_WARNINGS: 'false'
