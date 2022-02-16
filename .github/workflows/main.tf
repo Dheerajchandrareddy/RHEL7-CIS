@@ -61,9 +61,6 @@ resource "aws_instance" "testing_vm" {
   instance_type               = var.instance_type
   tags                        = var.instance_tags
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
-  metadata = {
-        ssh_authorized_keys = tls_private_key.github_actions.public_key_openssh
-    } 
 
   // SSH into instance 
   //  connection {
