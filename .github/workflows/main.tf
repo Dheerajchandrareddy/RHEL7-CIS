@@ -83,12 +83,11 @@ resource "local_file" "inventory" {
     # benchmark host
     all:
       hosts:
-        var.ami_os:
+        '${var.ami_os}':
           ansible_host: ${aws_instance.testing_vm.public_ip}
       vars:
         setup_audit: true
         run_audit: true
         system_is_ec2: true
-        .var.ansible_inventory_vars
     EOF
 }
