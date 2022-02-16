@@ -59,6 +59,10 @@ jobs:
       - name: find ansible host file
         working-directory: /home/runner
         run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
+      
+      - name: output hostfile
+        working-directory: .github/workflows
+        run: cat hosts.yml
 
 ## Run the ansible playbook
 
