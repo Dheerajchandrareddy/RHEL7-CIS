@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir .ssh
           chmod 700 .ssh
-          echo "${{ secrets.AWS_ACCESS_KEY_ID }}" > .ssh/${{ secrets.SSH_KEY_NAME }}
+          echo "${{ secrets.SSH_PRV_KEY }}" > .ssh/${{ secrets.SSH_KEY_NAME }}
           chmod 0400 .ssh/${{ secrets.SSH_KEY_NAME }}
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add .ssh/${{ secrets.SSH_KEY_NAME }}
