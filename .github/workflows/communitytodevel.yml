@@ -60,6 +60,10 @@ jobs:
 #       working-directory: /home/runner
 #        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
 #      
+      - name: find ssh key 
+        working-directory: /home/runner
+        run: ls -laR | grep github_actio*
+
       - name: Show Ansible hostfile
         working-directory: .github/workflows
         run: cat hosts.yml
