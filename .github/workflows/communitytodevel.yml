@@ -32,7 +32,7 @@ jobs:
           mkdir .ssh
           chmod 700 .ssh
           echo $PRIVATE_KEY > github_actions
-          chown runner:runner github_actions
+          chmod 600 github_actions
           #ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           #ssh-add .ssh/github_actions
 
