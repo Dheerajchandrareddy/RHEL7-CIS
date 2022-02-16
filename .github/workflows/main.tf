@@ -6,9 +6,9 @@ provider "aws" {
 // Generate the SSH keypair that we’ll use to configure the EC2 instance.
 // After that, write the private key to a local file and upload the public key to AWS
 
-variable "key_name" {
-  default = "github_actions"
-}
+//variable "key_name" {
+//  default = "github_actions"
+//}
 
 //resource "tls_private_key" "github_actions" { # Generate key
 //  algorithm = "RSA"
@@ -19,11 +19,6 @@ variable "key_name" {
 //  key_name   = var.key_name # Add temp_key to AWS
 //  public_key = tls_private_key.github_actions.public_key_openssh
 //}
-
-resource "aws_key_pair" "github_actions" {
-  key_name   = var.key_name # Add temp_key to AWS
-  public_key = var.github_pub_key
-}
 
 
 // Create a security group with access to port 22 and port 80 open to serve HTTP traffic
@@ -63,7 +58,7 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_instance" "testing_vm" {
   ami                         = var.ami_id
   associate_public_ip_address = true
-  key_name                    = aws_key_pair.github_actions.key_name
+//  key_name                    = aws_key_pair.github_actions.key_name
   instance_type               = var.instance_type
   tags                        = var.instance_tags
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
@@ -96,7 +91,9 @@ resource "local_file" "inventory" {
       hosts:
         ${var.ami_os}:
           ansible_host: ${aws_instance.testing_vm.public_ip}
+          ansible_user: ${var.ami_username}
       vars:
+        ansible_ssh_private_key_file: /home/runner/.ssh/github_action
         setup_audit: true
         run_audit: true
         system_is_ec2: true
