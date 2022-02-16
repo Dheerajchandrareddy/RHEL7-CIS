@@ -15,7 +15,6 @@ variable "instance_tags" {
   type        = map(string)
 }
 
-
 // Taken from the OSname.tfvars
 
 variable "ami_id" {
