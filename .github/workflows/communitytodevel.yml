@@ -33,7 +33,7 @@ jobs:
           chmod 700 .ssh
           echo $PRIVATE_KEY > .ssh/github_actions
           chmod 600 .ssh/github_actions
-          chown runner.runner 
+          chown -R runner.runner .ssh
           #ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           #ssh-add .ssh/github_actions
 
