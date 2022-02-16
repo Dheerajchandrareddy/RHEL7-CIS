@@ -6,9 +6,9 @@ provider "aws" {
 // Generate the SSH keypair that we’ll use to configure the EC2 instance.
 // After that, write the private key to a local file and upload the public key to AWS
 
-//variable "key_name" {
-//  default = "github_actions"
-//}
+variable "key_name" {
+  default = "github_actions"
+}
 
 //resource "tls_private_key" "github_actions" { # Generate key
 //  algorithm = "RSA"
