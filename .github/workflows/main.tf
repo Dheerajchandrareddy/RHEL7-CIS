@@ -6,19 +6,25 @@ provider "aws" {
 // Generate the SSH keypair that we’ll use to configure the EC2 instance.
 // After that, write the private key to a local file and upload the public key to AWS
 
-variable "key_name" {
-  default = "random"
-}
+//variable "key_name" {
+//  default = "random"
+//}
 
-resource "tls_private_key" "benchmark" { # Generate key
+//resource "tls_private_key" "benchmark" { # Generate key
+//  algorithm = "RSA"
+//  rsa_bits  = 4096
+//}
+
+//resource "aws_key_pair" "key_pair" {
+//  key_name   = var.key_name # Add temp_key to AWS
+//  public_key = tls_private_key.benchmark.public_key_openssh
+//}
+
+resource "tls_private_key" "github_actions" {
   algorithm = "RSA"
-  rsa_bits  = 4096
+  rsa_bits = "4096"
 }
 
-resource "aws_key_pair" "key_pair" {
-  key_name   = var.key_name # Add temp_key to AWS
-  public_key = tls_private_key.benchmark.public_key_openssh
-}
 
 // Create a security group with access to port 22 and port 80 open to serve HTTP traffic
 
@@ -50,10 +56,13 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_instance" "testing_vm" {
   ami                         = var.ami_id
   associate_public_ip_address = true
-  key_name                    = aws_key_pair.key_pair.key_name
+//  key_name                    = aws_key_pair.key_pair.key_name
   instance_type               = var.instance_type
   tags                        = var.instance_tags
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
+  metadata = {
+        ssh_authorized_keys = tls_private_key.github_actions.public_key_openssh
+    } 
 
   // SSH into instance 
   //  connection {
