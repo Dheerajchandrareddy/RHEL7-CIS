@@ -24,10 +24,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Add ssh_key
-        working-directory: ~/.ssh
+        working-directory: /home/runner
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} > ${{ secrets.SSH_KEY_NAME }}.pem
-          chmod 0400 ${{ secrets.SSH_KEY_NAME }}.pem
+          mkdir .ssh
+          chmod 700 .ssh
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }} > .ssh/${{ secrets.SSH_KEY_NAME }}.pem
+          chmod 0400 .ssh/${{ secrets.SSH_KEY_NAME }}.pem
           ssh-add ${{ secrets.SSH_KEY_NAME }}
 
 ### Build out the server
