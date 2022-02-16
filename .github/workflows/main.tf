@@ -10,14 +10,14 @@ variable "key_name" {
   default = "github_actions"
 }
 
-resource "tls_private_key" "benchmark" { # Generate key
+resource "tls_private_key" "github_actions" { # Generate key
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
 resource "aws_key_pair" "key_pair" {
   key_name   = var.key_name # Add temp_key to AWS
-  public_key = tls_private_key.benchmark.public_key_openssh
+  public_key = tls_private_key.github_actions.public_key_openssh
 }
 
 
