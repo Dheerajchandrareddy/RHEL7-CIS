@@ -20,6 +20,10 @@ provider "aws" {
 //  public_key = tls_private_key.github_actions.public_key_openssh
 //}
 
+resource "aws_key_pair" "github_actions" {
+  key_name   = var.key_name # Add temp_key to AWS
+  public_key = var.github_pub_key
+}
 
 
 // Create a security group with access to port 22 and port 80 open to serve HTTP traffic
@@ -39,6 +43,13 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -52,7 +63,7 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_instance" "testing_vm" {
   ami                         = var.ami_id
   associate_public_ip_address = true
-//  key_name                    = aws_key_pair.key_pair.key_name
+  key_name                    = aws_key_pair.github_actions.key_name
   instance_type               = var.instance_type
   tags                        = var.instance_tags
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
@@ -83,7 +94,7 @@ resource "local_file" "inventory" {
     # benchmark host
     all:
       hosts:
-        '${var.ami_os}':
+        ${var.ami_os}:
           ansible_host: ${aws_instance.testing_vm.public_ip}
       vars:
         setup_audit: true
