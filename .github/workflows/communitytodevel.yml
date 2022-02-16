@@ -30,10 +30,10 @@ jobs:
         run: |
           mkdir .ssh
           chmod 700 .ssh
-          echo "${{ secrets.SSH_PRV_KEY }}" > .ssh/github_actions
+          echo ${{ secrets.SSH_PRV_KEY }} > .ssh/github_actions
           chmod 600 .ssh/github_actions
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add .ssh/github_actions
+          #ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          #ssh-add .ssh/github_actions
 
 ### Build out the server
       - name: Terraform init
@@ -44,11 +44,11 @@ jobs:
         working-directory: .github/workflows
         run: terraform fmt
 
-      - name: terraform validate
+      - name: Terraform validate
         working-directory: .github/workflows
         run: terraform validate
 
-      - name: terraform apply
+      - name: Terraform apply
         working-directory: .github/workflows
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
