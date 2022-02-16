@@ -55,12 +55,12 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform apply -var-file "rocky8.tfvars" --auto-approve
 
-## find hosts file and read contents
+## debug ansible host file
 #      - name: find ansible host file
 #       working-directory: /home/runner
 #        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
 #      
-      - name: output hostfile
+      - name: Show Ansible hostfile
         working-directory: .github/workflows
         run: cat hosts.yml
 
