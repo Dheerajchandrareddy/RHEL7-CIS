@@ -15,6 +15,11 @@ variable "instance_tags" {
   type        = map(string)
 }
 
+variable "ami_key_pair_name" {
+  type        = string
+  default     = "github_actions"
+}
+
 // Taken from the OSname.tfvars
 
 variable "ami_id" {
