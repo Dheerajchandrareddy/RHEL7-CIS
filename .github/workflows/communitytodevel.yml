@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Add ssh_key
-        working-directory: /home/runner
+        working-directory: .github/workflows
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
           PRIVATE_KEY: "${{ secrets.SSH_PRV_KEY }}"
@@ -62,7 +62,7 @@ jobs:
 #        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
 #      
       - name: Find ssh key 
-        working-directory: /home/runner/
+        working-directory: .github/workflows
         run: whoami; pwd; cat github_actions
 
       - name: Show Ansible hostfile
