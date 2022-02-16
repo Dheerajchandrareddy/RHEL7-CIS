@@ -33,6 +33,7 @@ jobs:
           chmod 700 .ssh
           echo $PRIVATE_KEY > .ssh/github_actions
           chmod 600 .ssh/github_actions
+          chown runner.runner 
           #ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           #ssh-add .ssh/github_actions
 
@@ -62,8 +63,8 @@ jobs:
 #        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
 #      
       - name: Find ssh key 
-        working-directory: /home/runner/.ssh
-        run: pwd; ls -la; cat github_actions
+        working-directory: /home/runner/
+        run: whoami; pwd; ls -laR; cat .ssh/github_actions
 
       - name: Show Ansible hostfile
         working-directory: .github/workflows
