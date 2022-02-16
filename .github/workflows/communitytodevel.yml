@@ -25,12 +25,15 @@ jobs:
 
       - name: Add ssh_key
         working-directory: /home/runner
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           mkdir .ssh
           chmod 700 .ssh
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} > .ssh/${{ secrets.SSH_KEY_NAME }}.pem
-          chmod 0400 .ssh/${{ secrets.SSH_KEY_NAME }}.pem
-          ssh-add ${{ secrets.SSH_KEY_NAME }}
+          echo "${{ secrets.AWS_ACCESS_KEY_ID }}" > .ssh/${{ secrets.SSH_KEY_NAME }}
+          chmod 0400 .ssh/${{ secrets.SSH_KEY_NAME }}
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add .ssh/${{ secrets.SSH_KEY_NAME }}
 
 ### Build out the server
       - name: Terraform init
