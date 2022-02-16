@@ -56,10 +56,10 @@ jobs:
         run: terraform apply -var-file "rocky8.tfvars" --auto-approve
 
 ## find hosts file and read contents
-      - name: find ansible host file
-        working-directory: /home/runner
-        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
-      
+#      - name: find ansible host file
+#       working-directory: /home/runner
+#        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
+#      
       - name: output hostfile
         working-directory: .github/workflows
         run: cat hosts.yml
