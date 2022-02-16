@@ -57,7 +57,7 @@ resource "aws_instance" "testing_vm" {
   ami                         = var.ami_id
   associate_public_ip_address = true
 //  key_name                    = aws_key_pair.key_pair.key_name
-  key_name                    = var.key-public-openssh
+  key_name                    = var.key_public_openssh
   instance_type               = var.instance_type
   tags                        = var.instance_tags
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
