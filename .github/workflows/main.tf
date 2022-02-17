@@ -93,7 +93,7 @@ resource "local_file" "inventory" {
           ansible_host: ${aws_instance.testing_vm.public_ip}
           ansible_user: ${var.ami_username}
       vars:
-        ansible_ssh_private_key_file: .github/workflows/github_actions.pem
+        ansible_ssh_private_key_file: ".github/workflows/github_actions.pem"
         setup_audit: true
         run_audit: true
         system_is_ec2: true
