@@ -61,13 +61,13 @@ jobs:
 #       working-directory: /home/runner
 #        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
 #      
-      - name: Find ssh key 
-        working-directory: .github/workflows/.ssh
-        run: whoami; pwd; cat github_actions.pem
+#      - name: Find ssh key 
+#        working-directory: .github/workflows/.ssh
+#        run: whoami; pwd; cat github_actions.pem
 
-      - name: Show Ansible hostfile
-        working-directory: .github/workflows
-        run: cat hosts.yml
+#      - name: Show Ansible hostfile
+#        working-directory: .github/workflows
+#        run: cat hosts.yml
 
 ## Run the ansible playbook
 
