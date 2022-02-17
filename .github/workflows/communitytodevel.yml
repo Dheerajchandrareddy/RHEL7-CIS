@@ -8,6 +8,14 @@ name: CommunityToDevel
 on:
   pull_request:
     branches: [ devel ]
+# Set the OS to test on here
+# Name matches the os_name.tfvars file
+# one of
+# - centos7
+# - rocky8
+
+env: 
+  TEST_OS: centos7
 
 # A workflow run is made up of one or more jobs
 # that can run sequentially or in parallel
@@ -23,7 +31,7 @@ jobs:
       # so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Add ssh_key
+      - name: Add-SSH-KEY
         working-directory: .github/workflows
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -37,29 +45,24 @@ jobs:
           #ssh-add .ssh/github_actions.pem
 
 ### Build out the server
-      - name: Terraform init
+      - name: Terraform-Init
         working-directory: .github/workflows
         run: terraform init
 
-      - name: Terraform format
-        working-directory: .github/workflows
-        run: terraform fmt
-
-      - name: Terraform validate
+      - name: Terraform-Validate
         working-directory: .github/workflows
         run: terraform validate
 
-      - name: Terraform apply
+      - name: Terraform-Apply
         working-directory: .github/workflows
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          OS_TFVARS: centos7.tfvars
-        run: terraform apply -var-file $OS_TFVARS --auto-approve
+        run: terraform apply -var-file "${TEST_OS}.tfvars" --auto-approve
 
 ## debug ansible host file
 #      - name: find ansible host file
-#       working-directory: /home/runner
+#        working-directory: /home/runner
 #        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
 #      
 #      - name: Find ssh key 
@@ -72,29 +75,31 @@ jobs:
 
 
 # Centos 7 images take a while to come up insert sleep or playbook fails
-      - name: Sleep for 60 seconds if RHEL7
-        if: ${{ github.event.repository.name }} == "MindPointGroup/RHEL7-CIS"
-        run: sleep 60s
-        shell: bash
+#      - name: if RHEL7 - Sleep for 60 seconds 
+#        if: ${{ github.event.repository.name }} == "MindPointGroup/RHEL7-CIS" || ${{ github.event.repository.name }} == "MindPointGroup/RHEL7-STIG"
+#        run: sleep 60s
+#        shell: bash
 
 ## Run the ansible playbook
-      - name: Play Ansible Playbook
-        uses: arillso/action.playbook@master
-        with:
-          playbook: site.yml
-          inventory: .github/workflows/hosts.yml
-          galaxy_file: collections/requirements.yml
-          private_key: ${{ secrets.SSH_PRV_KEY }}
+#      - name: Play Ansible Playbook
+#        uses: arillso/action.playbook@master
+#        with:
+#          playbook: site.yml
+#          inventory: .github/workflows/hosts.yml
+#          galaxy_file: collections/requirements.yml
+#          private_key: ${{ secrets.SSH_PRV_KEY }}
 #          verbose: 3
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: "false"
-          ANSIBLE_DEPRECATION_WARNINGS: "false"
+#        env:
+#          ANSIBLE_HOST_KEY_CHECKING: "false"
+#          ANSIBLE_DEPRECATION_WARNINGS: "false"
 
 # Remove test system from AWS
 
-      - name: Terraform destroy
+      - name: Terraform-Destroy - if apply success
         working-directory: .github/workflows
+        if: steps.Terraform-Apply.outcome == 'success' && steps.Terraform-Apply.conclusion =='success'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform destroy -auto-approve
+          OS_TFVARS: centos7.tfvars
+        run: terraform destroy -var-file "${TEST_OS}.tfvars" -auto-approve
