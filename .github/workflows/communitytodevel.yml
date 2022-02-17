@@ -62,7 +62,7 @@ jobs:
 #        run: find ./ -name hosts.yml; cat `find ./ -name hosts.yml`
 #      
       - name: Find ssh key 
-        working-directory: .github/workflows
+        working-directory: .github/workflows/.ssh
         run: whoami; pwd; cat github_actions
 
       - name: Show Ansible hostfile
