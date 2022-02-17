@@ -63,7 +63,7 @@ jobs:
 #      
       - name: Find ssh key 
         working-directory: .github/workflows/.ssh
-        run: whoami; pwd; cat github_actions
+        run: whoami; pwd; cat github_actions.pem
 
       - name: Show Ansible hostfile
         working-directory: .github/workflows
