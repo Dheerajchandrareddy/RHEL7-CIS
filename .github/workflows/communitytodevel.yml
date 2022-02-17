@@ -54,7 +54,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply -var-file "rocky8.tfvars" --auto-approve
+        run: terraform apply -var-file "centos7.tfvars" --auto-approve
 
 ## debug ansible host file
 #      - name: find ansible host file
