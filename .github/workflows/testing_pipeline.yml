@@ -1,13 +1,16 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CommunityToDevel
+name: testing_pipeline
 
 # Controls when the action will run.
 # Triggers the workflow on push or pull request
 # events but only for the devel branch
 on:
   pull_request:
-    branches: [ devel ]
+    branches: 
+      - devel
+      - main
+
 # Set the OS to test on here
 # Name matches the os_name.tfvars file
 # one of
