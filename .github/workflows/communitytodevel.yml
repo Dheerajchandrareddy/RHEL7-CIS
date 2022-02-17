@@ -72,9 +72,9 @@ jobs:
 
 
 # Centos 7 images take a while to come up insert sleep or playbook fails
-      - name: Sleep for 30 seconds if RHEL7
+      - name: Sleep for 60 seconds if RHEL7
         if: ${{ github.event.repository.name }} == "MindPointGroup/RHEL7-CIS"
-        run: sleep 30s
+        run: sleep 60s
         shell: bash
 
 ## Run the ansible playbook
