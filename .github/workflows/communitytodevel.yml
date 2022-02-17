@@ -77,9 +77,11 @@ jobs:
           playbook: site.yml
           inventory: .github/workflows/hosts.yml
           galaxy_file: collections/requirements.yml
+          private_key: ${{ secrets.SSH_PRV_KEY }}
+          verbose: 3
         env:
-          ANSIBLE_HOST_KEY_CHECKING: 'false'
-          ANSIBLE_DEPRECATION_WARNINGS: 'false'
+          ANSIBLE_HOST_KEY_CHECKING: "false"
+          ANSIBLE_DEPRECATION_WARNINGS: "false"
 
 # Remove test system from AWS
 
