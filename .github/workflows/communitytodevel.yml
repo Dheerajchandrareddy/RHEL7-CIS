@@ -71,8 +71,8 @@ jobs:
 #        run: cat hosts.yml
 
 
-# Centos 7 images take a while to come up insert sleep
-      - name: Sleep for 30 seconds
+# Centos 7 images take a while to come up insert sleep or playbook fails
+      - name: Sleep for 30 seconds if RHEL7
         if: ${{ github.event.repository.name }} == "MindPointGroup/RHEL7-CIS"
         run: sleep 30s
         shell: bash
@@ -97,4 +97,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform destroy -force
+        run: terraform destroy -auto-approve
