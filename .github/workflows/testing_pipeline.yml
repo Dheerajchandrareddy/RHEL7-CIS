@@ -27,7 +27,7 @@ jobs:
     # - ubuntu18
 
     env: 
-      TEST_OS: rocky8
+      TEST_OS: centos7
       ENABLE_DEBUG: false
 
     # Steps represent a sequence of tasks that will be executed as part of the job
