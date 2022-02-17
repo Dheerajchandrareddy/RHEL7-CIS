@@ -6,10 +6,17 @@ name: testing_pipeline
 # Triggers the workflow on push or pull request
 # events but only for the devel branch
 on:
-  pull_request:
-    branches: 
+  pull_request_target:
+    types: [opened, reponed, synchronize]
+    branches:
       - devel
       - main
+    paths:
+      - '**.yml'
+      - '**.sh'
+      - '**.j2'
+      - '**.ps1'
+      - '**.cfg'
 
 # A workflow run is made up of one or more jobs
 # that can run sequentially or in parallel
