@@ -54,7 +54,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply -var-file "centos7.tfvars" --auto-approve
+          OS_TFVARS: centos7.tfvars
+        run: terraform apply -var-file $OS_TFVARS --auto-approve
 
 ## debug ansible host file
 #      - name: find ansible host file
@@ -69,8 +70,14 @@ jobs:
 #        working-directory: .github/workflows
 #        run: cat hosts.yml
 
-## Run the ansible playbook
 
+# Centos 7 images take a while to come up insert sleep
+      - name: Sleep for 30 seconds
+        if: ${{ github.event.repository.name }} == "MindPointGroup/RHEL7-CIS"
+        run: sleep 30s
+        shell: bash
+
+## Run the ansible playbook
       - name: Play Ansible Playbook
         uses: arillso/action.playbook@master
         with:
@@ -78,7 +85,7 @@ jobs:
           inventory: .github/workflows/hosts.yml
           galaxy_file: collections/requirements.yml
           private_key: ${{ secrets.SSH_PRV_KEY }}
-          verbose: 3
+#          verbose: 3
         env:
           ANSIBLE_HOST_KEY_CHECKING: "false"
           ANSIBLE_DEPRECATION_WARNINGS: "false"
